@@ -1,0 +1,8 @@
+Language	English	Japanese	Korean	Chinese Simplified	Chinese Traditional
+scMMMSDFMask	MSDF Masks	MSDF マスク	 MSDF 마스크	MSDF 蒙版	MSDF 蒙版
+scMMAlphaMask2nd	Alpha Mask 2nd	アルファマスク2nd	 Alpha Mask 2nd	Alpha Mask 2nd	Alpha Mask 2nd
+scMMDescription	Treat mask textures as MSDF texture	マスクテクスチャを MSDF テクスチャとして扱う	마스크 텍스처를 MSDF 텍스처로 처리합니다	将蒙版纹理视为 MSDF 纹理	將蒙版紋理視為 MSDF 紋理
+scMMMode	MSDF Mode	MSDF モード	MSDF 모드	MSDF 模式	MSDF 模式
+scMMModeDisabled	Disabled	無効	무효	禁用	禁用
+scMMModeEnabled	Enabled	有効	습니다	启用	啟用
+scMMModeInverted	Enabled (Inverted)	有効 (反転)	습니다 (반전)	启用 (反转)	啟用 (反轉)

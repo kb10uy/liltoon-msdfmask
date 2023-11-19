@@ -1,0 +1,17 @@
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Custom Properties
+        [lilEnum] _CustomAlphaMask2ndMode ("sAlphaMaskModes", Int) = 0
+        [NoScaleOffset] _CustomAlphaMask2nd ("scAlphaMask2nd", 2D) = "white" {}
+        _CustomAlphaMask2ndScale ("Scale", Float) = 1.0
+        _CustomAlphaMask2ndValue ("Value", Float) = 0.0
+
+        [lilEnum] _CustomUseMsdfMaskAlpha ("scMMAlpha", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskAlpha2 ("scMMAlpha", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskMain2 ("scMMMain2nd", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskMain3 ("scMMMain3rd", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskShadow ("scMMShadow", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskEmission1 ("scMMEmission1st", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskEmission2 ("scMMEmission2nd", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskMatCap1 ("scMMMatCap1st", Int) = 0
+        [lilEnum] _CustomUseMsdfMaskMatCap2 ("scMMMatCap2nd", Int) = 0

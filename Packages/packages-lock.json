@@ -33,7 +33,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.newtonsoft-json": {
-      "version": "2.0.2",
+      "version": "3.0.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -93,14 +93,22 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.2"
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
       }
     },
-    "com.vrchat.demo-template": {
-      "version": "file:com.vrchat.demo-template",
+    "jp.lilxyzw.liltoon": {
+      "version": "file:jp.lilxyzw.liltoon",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
+    },
+    "org.kb10uy.liltoon-msdfmask": {
+      "version": "file:org.kb10uy.liltoon-msdfmask",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "jp.lilxyzw.liltoon": "1.4.1"
+      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

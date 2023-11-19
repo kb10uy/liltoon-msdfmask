@@ -1,1 +1,13 @@
-{"dependencies": {}, "locked": {}}
+{
+  "dependencies": {
+    "jp.lilxyzw.liltoon": {
+      "version": "1.4.1"
+    }
+  },
+  "locked": {
+    "jp.lilxyzw.liltoon": {
+      "version": "1.4.1",
+      "dependencies": {}
+    }
+  }
+}

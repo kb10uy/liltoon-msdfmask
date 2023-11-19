@@ -1,0 +1,19 @@
+{
+  "name": "org.kb10uy.liltoon-msdfmask",
+  "displayName": "lilToon_MsdfMask",
+  "version": "1.4.1-p4",
+  "description": "MSDF Mask and 2nd Alpha Extended",
+  "dependencies": {
+    "jp.lilxyzw.liltoon": "1.4.1"
+  },
+  "gitDependencies": {},
+  "vpmDependencies": {},
+  "author": {
+    "name": "kb10uy",
+    "email": "kb10uy@kb10uy.org",
+    "url": "https://kb10uy.org"
+  },
+  "legacyFolders": {},
+  "legacyFiles": {},
+  "localPath": "I:\\VRChat\\Projects\\Avatars-20231118\\Packages\\org.kb10uy.liltoon-msdfmask"
+}
