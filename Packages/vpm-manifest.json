@@ -2,18 +2,11 @@
   "dependencies": {
     "jp.lilxyzw.liltoon": {
       "version": "1.4.1"
-    },
-    "com.vrchat.core.vpm-resolver": {
-      "version": "0.1.27"
     }
   },
   "locked": {
     "jp.lilxyzw.liltoon": {
-      "version": "1.5.0",
-      "dependencies": {}
-    },
-    "com.vrchat.core.vpm-resolver": {
-      "version": "0.1.27",
+      "version": "1.4.1",
       "dependencies": {}
     }
   }
