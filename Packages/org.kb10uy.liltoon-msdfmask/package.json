@@ -2,6 +2,7 @@
   "name": "org.kb10uy.liltoon-msdfmask",
   "displayName": "lilToon_MsdfMask",
   "version": "1.5.0-p6",
+  "unity": "2019.4",
   "description": "MSDF Mask and 2nd Alpha Extended",
   "dependencies": {
     "jp.lilxyzw.liltoon": "1.5.0"
