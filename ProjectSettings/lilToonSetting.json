@@ -12,6 +12,7 @@
     "LIL_FEATURE_RECEIVE_SHADOW": true,
     "LIL_FEATURE_SHADOW_3RD": true,
     "LIL_FEATURE_SHADOW_LUT": true,
+    "LIL_FEATURE_RIMSHADE": true,
     "LIL_FEATURE_EMISSION_1ST": true,
     "LIL_FEATURE_EMISSION_2ND": true,
     "LIL_FEATURE_ANIMATE_EMISSION_UV": true,
@@ -106,6 +107,7 @@
     "isLocked": false,
     "isDebugOptimize": false,
     "isOptimizeInTestBuild": false,
+    "isMigrateInStartUp": true,
     "defaultAsUnlit": 0.0,
     "defaultVertexLightStrength": 0.0,
     "defaultLightMinLimit": 0.05000000074505806,
@@ -130,5 +132,6 @@
     },
     "presetCloth": {
         "instanceID": 0
-    }
+    },
+    "previousVersion": 39
 }
