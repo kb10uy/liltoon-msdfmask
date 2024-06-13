@@ -6,3 +6,7 @@ scMMMode	MSDF Mode	MSDF モード	MSDF 모드	MSDF 模式	MSDF 模式
 scMMModeDisabled	Disabled	無効	무효	禁用	禁用
 scMMModeEnabled	Enabled	有効	습니다	启用	啟用
 scMMModeInverted	Enabled (Inverted)	有効 (反転)	습니다 (반전)	启用 (反转)	啟用 (反轉)
+scMMLSModes	Layered SDF	マルチレイヤー SDF	Layered SDF	Layered SDF	Layered SDF
+scMMLSColorR	Channel R	R チャンネル	Channel R	Channel R	Channel R
+scMMLSColorG	Channel G	G チャンネル	Channel G	Channel G	Channel G
+scMMLSColorB	Channel B	B チャンネル	Channel B	Channel B	Channel B

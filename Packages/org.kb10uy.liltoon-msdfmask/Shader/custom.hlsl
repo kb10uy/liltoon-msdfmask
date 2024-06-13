@@ -12,7 +12,12 @@
     int _CustomUseMsdfMaskEmission1; \
     int _CustomUseMsdfMaskEmission2; \
     int _CustomUseMsdfMaskMatCap1;   \
-    int _CustomUseMsdfMaskMatCap2;
+    int _CustomUseMsdfMaskMatCap2;   \
+    \
+    int _CustomLayeredSdfMode;       \
+    float4 _CustomLayeredSdfColorR;  \
+    float4 _CustomLayeredSdfColorG;  \
+    float4 _CustomLayeredSdfColorB;
 
 #define LIL_CUSTOM_TEXTURES \
     TEXTURE2D(_CustomAlphaMask2nd);

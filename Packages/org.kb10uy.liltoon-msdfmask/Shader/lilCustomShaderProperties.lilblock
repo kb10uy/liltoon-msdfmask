@@ -15,3 +15,8 @@
         [lilEnum] _CustomUseMsdfMaskEmission2 ("scMMEmission2nd", Int) = 0
         [lilEnum] _CustomUseMsdfMaskMatCap1 ("scMMMatCap1st", Int) = 0
         [lilEnum] _CustomUseMsdfMaskMatCap2 ("scMMMatCap2nd", Int) = 0
+
+        [lilEnum] _CustomLayeredSdfMode ("scMMLSModes", Int) = 0
+        [lilHDR] _CustomLayeredSdfColorR ("scMMLSColorR", Color) = (0.0, 0.0, 0.0, 0.0)
+        [lilHDR] _CustomLayeredSdfColorG ("scMMLSColorG", Color) = (0.0, 0.0, 0.0, 0.0)
+        [lilHDR] _CustomLayeredSdfColorB ("scMMLSColorB", Color) = (0.0, 0.0, 0.0, 0.0)

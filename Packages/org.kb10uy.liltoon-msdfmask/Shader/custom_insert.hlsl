@@ -1,3 +1,13 @@
+float4 lilMsdfMaskSDF(float4 input) {
+    return step(float4(0.5, 0.5, 0.5, 0.5), input);
+}
+
+float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
+    float alpha = lerp(bg.a, 1.0, fg.a);
+    float3 color = lerp(bg.rgb * bg.a, fg.rgb, fg.a) / max(alpha, 0.001);
+    return float4(lerp(float3(0.0, 0.0, 0.0), color, step(0.001, alpha)), alpha);
+}
+
 // Alpha Mask / 2nd
 #if defined(LIL_FEATURE_ALPHAMASK)
     void lilGetAlphaMsdfMask(inout lilFragData fd)
@@ -59,7 +69,15 @@
             if(_Main2ndTex_UVMode == 3) uv2nd = fd.uv3;
             if(_Main2ndTex_UVMode == 4) uv2nd = fd.uvMat;
             #if defined(LIL_FEATURE_Main2ndTex)
-                color2nd *= LIL_GET_SUBTEX(_Main2ndTex, uv2nd);
+                if (_CustomLayeredSdfMode == 1) {
+                    // LIL_GET_SUBTEX reflects decal mask into A channel
+                    float4 sdfValue = lilMsdfMaskSDF(LIL_GET_SUBTEX(_Main2ndTex, uv2nd));
+                    color2nd = lilMsdfMaskAlphaBlend(color2nd, _CustomLayeredSdfColorB * sdfValue.b * sdfValue.a);
+                    color2nd = lilMsdfMaskAlphaBlend(color2nd, _CustomLayeredSdfColorG * sdfValue.g * sdfValue.a);
+                    color2nd = lilMsdfMaskAlphaBlend(color2nd, _CustomLayeredSdfColorR * sdfValue.r * sdfValue.a);
+                } else {
+                    color2nd *= LIL_GET_SUBTEX(_Main2ndTex, uv2nd);
+                }
             #endif
             #if defined(LIL_FEATURE_Main2ndBlendMask)
                 // MSDF Mask Process
@@ -156,7 +174,15 @@
             if(_Main3rdTex_UVMode == 3) uv3rd = fd.uv3;
             if(_Main3rdTex_UVMode == 4) uv3rd = fd.uvMat;
             #if defined(LIL_FEATURE_Main3rdTex)
-                color3rd *= LIL_GET_SUBTEX(_Main3rdTex, uv3rd);
+                if (_CustomLayeredSdfMode == 2) {
+                    // LIL_GET_SUBTEX reflects decal mask into A channel
+                    float4 sdfValue = lilMsdfMaskSDF(LIL_GET_SUBTEX(_Main3rdTex, uv3rd));
+                    color3rd = lilMsdfMaskAlphaBlend(color3rd, _CustomLayeredSdfColorB * sdfValue.b * sdfValue.a);
+                    color3rd = lilMsdfMaskAlphaBlend(color3rd, _CustomLayeredSdfColorG * sdfValue.g * sdfValue.a);
+                    color3rd = lilMsdfMaskAlphaBlend(color3rd, _CustomLayeredSdfColorR * sdfValue.r * sdfValue.a);
+                } else {
+                    color3rd *= LIL_GET_SUBTEX(_Main3rdTex, uv3rd);
+                }
             #endif
             #if defined(LIL_FEATURE_Main3rdBlendMask)
                 // MSDF Mask Process

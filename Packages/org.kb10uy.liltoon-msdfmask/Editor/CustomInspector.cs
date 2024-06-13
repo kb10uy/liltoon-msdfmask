@@ -20,6 +20,10 @@ namespace KusakaFactory.LiltoonMsdfMask
         private MaterialProperty _useMsdfMaskEmission2;
         private MaterialProperty _useMsdfMaskMatCap1;
         private MaterialProperty _useMsdfMaskMatCap2;
+        private MaterialProperty _layeredSdfMode;
+        private MaterialProperty _layeredSdfColorR;
+        private MaterialProperty _layeredSdfColorG;
+        private MaterialProperty _layeredSdfColorB;
 
         private string _modeLabelAlpha1 = "";
         private string _modeLabelAlpha2 = "";
@@ -30,9 +34,11 @@ namespace KusakaFactory.LiltoonMsdfMask
         private string _modeLabelEmission2 = "";
         private string _modeLabelMatCap1 = "";
         private string _modeLabelMatCap2 = "";
+        private string _modeLabelLayeredSdf = "";
 
         private static bool isShowAlphaMask2;
         private static bool isShowMsdfMask;
+        private static bool isShowLayeredSDF;
         private const string shaderName = "MsdfMask";
 
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
@@ -53,6 +59,7 @@ namespace KusakaFactory.LiltoonMsdfMask
             _modeLabelEmission2 = BuildParams(GetLoc("sEmission2nd"), GetLoc("scMMModeDisabled"), GetLoc("scMMModeEnabled"), GetLoc("scMMModeInverted"));
             _modeLabelMatCap1 = BuildParams(GetLoc("sMatCap"), GetLoc("scMMModeDisabled"), GetLoc("scMMModeEnabled"), GetLoc("scMMModeInverted"));
             _modeLabelMatCap2 = BuildParams(GetLoc("sMatCap2nd"), GetLoc("scMMModeDisabled"), GetLoc("scMMModeEnabled"), GetLoc("scMMModeInverted"));
+            _modeLabelLayeredSdf = BuildParams(GetLoc("scMMLSModes"), GetLoc("scMMModeDisabled"), GetLoc("sMainColor2nd"), GetLoc("sMainColor3rd"));
 
             _alpha2Mode = FindProperty("_CustomAlphaMask2ndMode", props);
             _alpha2Mask = FindProperty("_CustomAlphaMask2nd", props);
@@ -67,6 +74,10 @@ namespace KusakaFactory.LiltoonMsdfMask
             _useMsdfMaskEmission2 = FindProperty("_CustomUseMsdfMaskEmission2", props);
             _useMsdfMaskMatCap1 = FindProperty("_CustomUseMsdfMaskMatCap1", props);
             _useMsdfMaskMatCap2 = FindProperty("_CustomUseMsdfMaskMatCap2", props);
+            _layeredSdfMode = FindProperty("_CustomLayeredSdfMode", props);
+            _layeredSdfColorR = FindProperty("_CustomLayeredSdfColorR", props);
+            _layeredSdfColorG = FindProperty("_CustomLayeredSdfColorG", props);
+            _layeredSdfColorB = FindProperty("_CustomLayeredSdfColorB", props);
         }
 
         protected override void DrawCustomProperties(Material material)
@@ -80,7 +91,7 @@ namespace KusakaFactory.LiltoonMsdfMask
             // customToggleFont label for box
 
             isShowAlphaMask2 = Foldout(GetLoc("scMMAlphaMask2nd"), GetLoc("scMMAlphaMask2nd"), isShowAlphaMask2);
-            if(isShowAlphaMask2)
+            if (isShowAlphaMask2)
             {
                 EditorGUILayout.BeginVertical(boxOuter);
                 EditorGUILayout.LabelField(GetLoc("scMMAlphaMask2nd"), customToggleFont);
@@ -91,7 +102,7 @@ namespace KusakaFactory.LiltoonMsdfMask
                 {
                     lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, lilLanguageManager.alphaMaskContent, _alpha2Mask, false);
                     lilEditorGUI.UVSettingGUI(m_MaterialEditor, _alpha2Mask);
-                    
+
                     bool invertAlphaMask = _alpha2Scale.floatValue < 0;
                     float transparency = _alpha2Value.floatValue - (invertAlphaMask ? 1.0f : 0.0f);
 
@@ -101,7 +112,7 @@ namespace KusakaFactory.LiltoonMsdfMask
                     transparency = lilEditorGUI.Slider("Transparency", transparency, -1.0f, 1.0f);
                     EditorGUI.showMixedValue = false;
 
-                    if(EditorGUI.EndChangeCheck())
+                    if (EditorGUI.EndChangeCheck())
                     {
                         _alpha2Scale.floatValue = invertAlphaMask ? -1.0f : 1.0f;
                         _alpha2Value.floatValue = transparency + (invertAlphaMask ? 1.0f : 0.0f);
@@ -113,7 +124,7 @@ namespace KusakaFactory.LiltoonMsdfMask
             }
 
             isShowMsdfMask = Foldout(GetLoc("scMMMSDFMask"), GetLoc("scMMMSDFMask"), isShowMsdfMask);
-            if(isShowMsdfMask)
+            if (isShowMsdfMask)
             {
                 EditorGUILayout.BeginVertical(boxOuter);
                 EditorGUILayout.LabelField(GetLoc("scMMDescription"), customToggleFont);
@@ -132,53 +143,72 @@ namespace KusakaFactory.LiltoonMsdfMask
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
             }
+
+            isShowLayeredSDF = Foldout(GetLoc("scMMLSModes"), GetLoc("scMMLSModes"), isShowLayeredSDF);
+            if (isShowLayeredSDF)
+            {
+                EditorGUILayout.BeginVertical(boxOuter);
+                EditorGUILayout.LabelField(GetLoc("scMMLSModes"), customToggleFont);
+                EditorGUILayout.BeginVertical(boxInnerHalf);
+
+                m_MaterialEditor.ShaderProperty(_layeredSdfMode, _modeLabelLayeredSdf);
+                if (_layeredSdfMode.floatValue != 0)
+                {
+                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, _layeredSdfColorR, false);
+                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, _layeredSdfColorG, false);
+                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, _layeredSdfColorB, false);
+                }
+
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndVertical();
+            }
         }
 
         protected override void ReplaceToCustomShaders()
         {
-            lts         = Shader.Find(shaderName + "/lilToon");
-            ltsc        = Shader.Find("Hidden/" + shaderName + "/Cutout");
-            ltst        = Shader.Find("Hidden/" + shaderName + "/Transparent");
-            ltsot       = Shader.Find("Hidden/" + shaderName + "/OnePassTransparent");
-            ltstt       = Shader.Find("Hidden/" + shaderName + "/TwoPassTransparent");
+            lts = Shader.Find(shaderName + "/lilToon");
+            ltsc = Shader.Find("Hidden/" + shaderName + "/Cutout");
+            ltst = Shader.Find("Hidden/" + shaderName + "/Transparent");
+            ltsot = Shader.Find("Hidden/" + shaderName + "/OnePassTransparent");
+            ltstt = Shader.Find("Hidden/" + shaderName + "/TwoPassTransparent");
 
-            ltso        = Shader.Find("Hidden/" + shaderName + "/OpaqueOutline");
-            ltsco       = Shader.Find("Hidden/" + shaderName + "/CutoutOutline");
-            ltsto       = Shader.Find("Hidden/" + shaderName + "/TransparentOutline");
-            ltsoto      = Shader.Find("Hidden/" + shaderName + "/OnePassTransparentOutline");
-            ltstto      = Shader.Find("Hidden/" + shaderName + "/TwoPassTransparentOutline");
+            ltso = Shader.Find("Hidden/" + shaderName + "/OpaqueOutline");
+            ltsco = Shader.Find("Hidden/" + shaderName + "/CutoutOutline");
+            ltsto = Shader.Find("Hidden/" + shaderName + "/TransparentOutline");
+            ltsoto = Shader.Find("Hidden/" + shaderName + "/OnePassTransparentOutline");
+            ltstto = Shader.Find("Hidden/" + shaderName + "/TwoPassTransparentOutline");
 
-            ltsoo       = Shader.Find(shaderName + "/[Optional] OutlineOnly/Opaque");
-            ltscoo      = Shader.Find(shaderName + "/[Optional] OutlineOnly/Cutout");
-            ltstoo      = Shader.Find(shaderName + "/[Optional] OutlineOnly/Transparent");
+            ltsoo = Shader.Find(shaderName + "/[Optional] OutlineOnly/Opaque");
+            ltscoo = Shader.Find(shaderName + "/[Optional] OutlineOnly/Cutout");
+            ltstoo = Shader.Find(shaderName + "/[Optional] OutlineOnly/Transparent");
 
-            ltstess     = Shader.Find("Hidden/" + shaderName + "/Tessellation/Opaque");
-            ltstessc    = Shader.Find("Hidden/" + shaderName + "/Tessellation/Cutout");
-            ltstesst    = Shader.Find("Hidden/" + shaderName + "/Tessellation/Transparent");
-            ltstessot   = Shader.Find("Hidden/" + shaderName + "/Tessellation/OnePassTransparent");
-            ltstesstt   = Shader.Find("Hidden/" + shaderName + "/Tessellation/TwoPassTransparent");
+            ltstess = Shader.Find("Hidden/" + shaderName + "/Tessellation/Opaque");
+            ltstessc = Shader.Find("Hidden/" + shaderName + "/Tessellation/Cutout");
+            ltstesst = Shader.Find("Hidden/" + shaderName + "/Tessellation/Transparent");
+            ltstessot = Shader.Find("Hidden/" + shaderName + "/Tessellation/OnePassTransparent");
+            ltstesstt = Shader.Find("Hidden/" + shaderName + "/Tessellation/TwoPassTransparent");
 
-            ltstesso    = Shader.Find("Hidden/" + shaderName + "/Tessellation/OpaqueOutline");
-            ltstessco   = Shader.Find("Hidden/" + shaderName + "/Tessellation/CutoutOutline");
-            ltstessto   = Shader.Find("Hidden/" + shaderName + "/Tessellation/TransparentOutline");
-            ltstessoto  = Shader.Find("Hidden/" + shaderName + "/Tessellation/OnePassTransparentOutline");
-            ltstesstto  = Shader.Find("Hidden/" + shaderName + "/Tessellation/TwoPassTransparentOutline");
+            ltstesso = Shader.Find("Hidden/" + shaderName + "/Tessellation/OpaqueOutline");
+            ltstessco = Shader.Find("Hidden/" + shaderName + "/Tessellation/CutoutOutline");
+            ltstessto = Shader.Find("Hidden/" + shaderName + "/Tessellation/TransparentOutline");
+            ltstessoto = Shader.Find("Hidden/" + shaderName + "/Tessellation/OnePassTransparentOutline");
+            ltstesstto = Shader.Find("Hidden/" + shaderName + "/Tessellation/TwoPassTransparentOutline");
 
-            ltsref      = Shader.Find("Hidden/" + shaderName + "/Refraction");
-            ltsrefb     = Shader.Find("Hidden/" + shaderName + "/RefractionBlur");
-            ltsfur      = Shader.Find("Hidden/" + shaderName + "/Fur");
-            ltsfurc     = Shader.Find("Hidden/" + shaderName + "/FurCutout");
-            ltsfurtwo   = Shader.Find("Hidden/" + shaderName + "/FurTwoPass");
-            ltsfuro     = Shader.Find(shaderName + "/[Optional] FurOnly/Transparent");
-            ltsfuroc    = Shader.Find(shaderName + "/[Optional] FurOnly/Cutout");
-            ltsfurotwo  = Shader.Find(shaderName + "/[Optional] FurOnly/TwoPass");
-            ltsgem      = Shader.Find("Hidden/" + shaderName + "/Gem");
-            ltsfs       = Shader.Find(shaderName + "/[Optional] FakeShadow");
+            ltsref = Shader.Find("Hidden/" + shaderName + "/Refraction");
+            ltsrefb = Shader.Find("Hidden/" + shaderName + "/RefractionBlur");
+            ltsfur = Shader.Find("Hidden/" + shaderName + "/Fur");
+            ltsfurc = Shader.Find("Hidden/" + shaderName + "/FurCutout");
+            ltsfurtwo = Shader.Find("Hidden/" + shaderName + "/FurTwoPass");
+            ltsfuro = Shader.Find(shaderName + "/[Optional] FurOnly/Transparent");
+            ltsfuroc = Shader.Find(shaderName + "/[Optional] FurOnly/Cutout");
+            ltsfurotwo = Shader.Find(shaderName + "/[Optional] FurOnly/TwoPass");
+            ltsgem = Shader.Find("Hidden/" + shaderName + "/Gem");
+            ltsfs = Shader.Find(shaderName + "/[Optional] FakeShadow");
 
-            ltsover     = Shader.Find(shaderName + "/[Optional] Overlay");
-            ltsoover    = Shader.Find(shaderName + "/[Optional] OverlayOnePass");
-            ltslover    = Shader.Find(shaderName + "/[Optional] LiteOverlay");
-            ltsloover   = Shader.Find(shaderName + "/[Optional] LiteOverlayOnePass");
+            ltsover = Shader.Find(shaderName + "/[Optional] Overlay");
+            ltsoover = Shader.Find(shaderName + "/[Optional] OverlayOnePass");
+            ltslover = Shader.Find(shaderName + "/[Optional] LiteOverlay");
+            ltsloover = Shader.Find(shaderName + "/[Optional] LiteOverlayOnePass");
 
             /*
             ltsl        = Shader.Find(shaderName + "/lilToonLite");
