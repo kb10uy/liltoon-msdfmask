@@ -1,7 +1,7 @@
 {
   "name": "org.kb10uy.liltoon-msdfmask",
   "displayName": "lilToon MsdfMask Extension",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "unity": "2022.3",
   "description": "MSDF Mask and 2nd Alpha Extended",
   "documentationUrl": "https://kb10uy.org/posts/liltoon-msdfmask-instruction/",
@@ -9,7 +9,7 @@
   "licenseUrl": "https://github.com/kb10uy/liltoon-msdfmask/blob/main/README.md",
   "dependencies": {},
   "vpmDependencies": {
-    "jp.lilxyzw.liltoon": ">=1.7.0"
+    "jp.lilxyzw.liltoon": ">=1.8.0"
   },
   "author": {
     "name": "kb10uy",
