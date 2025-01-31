@@ -1,7 +1,7 @@
 {
   "name": "org.kb10uy.liltoon-msdfmask",
   "displayName": "lilToon MsdfMask Extension",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "unity": "2022.3",
   "description": "MSDF Mask and 2nd Alpha Extended",
   "documentationUrl": "https://kb10uy.org/posts/liltoon-msdfmask-instruction/",
