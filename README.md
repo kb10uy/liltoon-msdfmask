@@ -1,5 +1,4 @@
-# lilToon_MsdfMask 1.4.1 p4
-derived from v1.4.1, forged by kb10uy
+# lilToon MsdfMask Extension
 
 ## 概要
 * lilToon で設定できる一部のマスクテクスチャを MSDF (Multi-channel Signed Distance Field) テクスチャとして
@@ -24,13 +23,3 @@ derived from v1.4.1, forged by kb10uy
 ## ライセンス
 lilToon_MsdfMask は lilToon のコードの一部を改変して作成されました。
 lilToon は The MIT License でライセンスされています(LICENSE-lilToon.txt も参照してください)。
-
-## 更新履歴
-* 2023/10/01 v1.4.1 p4
-    - アルファマスク 2nd を追加。
-* 2023/10/01 v1.4.1 p3
-    - ビルド時にエラーになることがある問題を修正。
-* 2023/09/30 v1.4.1 p2
-    - Lite, Multi の対応を削除(使用頻度が低そうなので)。
-    - AlphaMask に対応。
-    - MSDF の値を反転して使えるモードを追加。
