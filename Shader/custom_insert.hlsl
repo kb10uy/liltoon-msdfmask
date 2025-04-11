@@ -409,6 +409,10 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
             {
                 shadowStrength *= shadowStrengthMask.r;
             }
+            else if(_ShadowMaskType == 2)
+            {
+                shadowStrength *= shadowStrengthMask.b;
+            }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 
             // Shadow Colors
