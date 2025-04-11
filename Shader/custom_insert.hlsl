@@ -287,6 +287,11 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
             // Shade
             float aastrencth = _AAStrength;
             float4 lns = 1.0;
+            lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
+            lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
+            #if defined(LIL_FEATURE_SHADOW_3RD)
+                lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
+            #endif
             if(_ShadowMaskType == 2)
             {
                 float3 faceR = mul((float3x3)LIL_MATRIX_M, float3(1.0,0.0,0.0));
@@ -301,16 +306,17 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 faceL = dot(faceL,faceL) == 0 ? 0 : normalize(faceL);
 
                 float lnSDF = dot(faceL,faceF);
-                lns = saturate(lnSDF * 0.5 + sdf * 0.5 + 0.25);
+                lns = lerp(saturate(lnSDF * 0.5 + sdf * 0.5 + 0.25), lns, shadowStrengthMask.b);
                 aastrencth = 0;
-            }
-            else
-            {
-                lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
-                lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
-                #if defined(LIL_FEATURE_SHADOW_3RD)
-                    lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
-                #endif
+            // }
+            // else
+            // {
+            //     lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
+            //     lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
+            //     #if defined(LIL_FEATURE_SHADOW_3RD)
+            //         lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
+            //     #endif
+                shadowStrengthMask.r = shadowStrengthMask.a;
             }
 
             // Shadow
@@ -405,13 +411,9 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 if (_CustomUseMsdfMaskShadow == 2) strengthValue = 1.0 - lilMSDF(shadowStrengthMask.rgb) * shadowStrengthMask.a;
                 lns = lerp(lnFlat, lns, strengthValue);
             }
-            else if(_ShadowMaskType == 0)
+            else
             {
                 shadowStrength *= shadowStrengthMask.r;
-            }
-            else if(_ShadowMaskType == 2)
-            {
-                shadowStrength *= shadowStrengthMask.b;
             }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 
