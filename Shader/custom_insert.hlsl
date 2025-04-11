@@ -308,14 +308,6 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 float lnSDF = dot(faceL,faceF);
                 lns = lerp(saturate(lnSDF * 0.5 + sdf * 0.5 + 0.25), lns, shadowStrengthMask.b);
                 aastrencth = 0;
-            // }
-            // else
-            // {
-            //     lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
-            //     lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
-            //     #if defined(LIL_FEATURE_SHADOW_3RD)
-            //         lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
-            //     #endif
                 shadowStrengthMask.r = shadowStrengthMask.a;
             }
 
