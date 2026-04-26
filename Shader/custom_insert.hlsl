@@ -2,6 +2,13 @@ float4 lilMsdfMaskSDF(float4 input) {
     return step(float4(0.5, 0.5, 0.5, 0.5), input);
 }
 
+float lilMsdfMaskCalculateMSDF(float3 msd, float steepness) {
+    float sd = lilMedian(msd.r, msd.g, msd.b);
+    float smoothRange = (1.0 - steepness) * 0.01;
+    return smoothstep(0.5 - smoothRange, 0.5 + smoothRange, sd);
+    // return saturate((sd - 0.5) / clamp(fwidth(sd), 0.01, 1.0));
+}
+
 float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
     float alpha = lerp(bg.a, 1.0, fg.a);
     float3 color = lerp(bg.rgb * bg.a, fg.rgb, fg.a) / max(alpha, 0.001);
@@ -16,8 +23,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
         {
             float4 maskColor = LIL_SAMPLE_2D_ST(_AlphaMask, sampler_MainTex, fd.uvMain);
             float maskValue = maskColor.r;
-            if (_CustomUseMsdfMaskAlpha == 1) maskValue = lilMSDF(maskColor.rgb) * maskColor.a;
-            if (_CustomUseMsdfMaskAlpha == 2) maskValue = 1.0 - lilMSDF(maskColor.rgb) * maskColor.a;
+            if (_CustomUseMsdfMaskAlpha == 1) maskValue = lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
+            if (_CustomUseMsdfMaskAlpha == 2) maskValue = 1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
 
             float alphaMask = saturate(maskValue * _AlphaMaskScale + _AlphaMaskValue);
             if(_AlphaMaskMode == 1) fd.col.a = alphaMask;
@@ -30,8 +37,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
         {
             float4 maskColor2 = LIL_SAMPLE_2D_ST(_CustomAlphaMask2nd, sampler_MainTex, fd.uvMain);
             float maskValue2 = maskColor2.r;
-            if (_CustomUseMsdfMaskAlpha2 == 1) maskValue2 = lilMSDF(maskColor2.rgb) * maskColor2.a;
-            if (_CustomUseMsdfMaskAlpha2 == 2) maskValue2 = 1.0 - lilMSDF(maskColor2.rgb) * maskColor2.a;
+            if (_CustomUseMsdfMaskAlpha2 == 1) maskValue2 = lilMsdfMaskCalculateMSDF(maskColor2.rgb, _CustomMsdfSteepness) * maskColor2.a;
+            if (_CustomUseMsdfMaskAlpha2 == 2) maskValue2 = 1.0 - lilMsdfMaskCalculateMSDF(maskColor2.rgb, _CustomMsdfSteepness) * maskColor2.a;
 
             float alphaMask2 = saturate(maskValue2 * _CustomAlphaMask2ndScale + _CustomAlphaMask2ndValue);
             if(_CustomAlphaMask2ndMode == 1) fd.col.a = alphaMask2;
@@ -83,8 +90,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 // MSDF Mask Process
                 float4 maskColor = LIL_SAMPLE_2D(_Main2ndBlendMask, samp, fd.uvMain);
                 float maskValue = maskColor.r;
-                if (_CustomUseMsdfMaskMain2 == 1) maskValue = lilMSDF(maskColor.rgb) * maskColor.a;
-                if (_CustomUseMsdfMaskMain2 == 2) maskValue = 1.0 - lilMSDF(maskColor.rgb) * maskColor.a;
+                if (_CustomUseMsdfMaskMain2 == 1) maskValue = lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
+                if (_CustomUseMsdfMaskMain2 == 2) maskValue = 1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
                 color2nd.a *= maskValue;
             #endif
 
@@ -188,8 +195,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 // MSDF Mask Process
                 float4 maskColor = LIL_SAMPLE_2D(_Main3rdBlendMask, samp, fd.uvMain);
                 float maskValue = maskColor.r;
-                if (_CustomUseMsdfMaskMain3 == 1) maskValue = lilMSDF(maskColor.rgb) * maskColor.a;
-                if (_CustomUseMsdfMaskMain3 == 2) maskValue = 1.0 - lilMSDF(maskColor.rgb) * maskColor.a;
+                if (_CustomUseMsdfMaskMain3 == 1) maskValue = lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
+                if (_CustomUseMsdfMaskMain3 == 2) maskValue = 1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
                 color3rd.a *= maskValue;
             #endif
 
@@ -399,8 +406,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                     lnFlat *= lerp(1.0, calculatedShadow, _ShadowReceive);
                 #endif
                 float strengthValue = shadowStrengthMask.r;
-                if (_CustomUseMsdfMaskShadow == 1) strengthValue = lilMSDF(shadowStrengthMask.rgb) * shadowStrengthMask.a;
-                if (_CustomUseMsdfMaskShadow == 2) strengthValue = 1.0 - lilMSDF(shadowStrengthMask.rgb) * shadowStrengthMask.a;
+                if (_CustomUseMsdfMaskShadow == 1) strengthValue = lilMsdfMaskCalculateMSDF(shadowStrengthMask.rgb, _CustomMsdfSteepness) * shadowStrengthMask.a;
+                if (_CustomUseMsdfMaskShadow == 2) strengthValue = 1.0 - lilMsdfMaskCalculateMSDF(shadowStrengthMask.rgb, _CustomMsdfSteepness) * shadowStrengthMask.a;
                 lns = lerp(lnFlat, lns, strengthValue);
             }
             else
@@ -530,8 +537,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 // MSDF Mask Process
                 float4 maskColor = LIL_SAMPLE_2D_ST(_MatCapBlendMask, samp, fd.uvMain);
                 float3 maskValue = maskColor.rgb;
-                if (_CustomUseMsdfMaskMatCap1 == 1) maskValue = lilMSDF(maskColor.rgb) * maskColor.a;
-                if (_CustomUseMsdfMaskMatCap1 == 2) maskValue = 1.0 - lilMSDF(maskColor.rgb) * maskColor.a;
+                if (_CustomUseMsdfMaskMatCap1 == 1) maskValue = lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
+                if (_CustomUseMsdfMaskMatCap1 == 2) maskValue = 1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
                 matCapMask = maskValue;
             #endif
 
@@ -589,8 +596,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                 // MSDF Mask Process
                 float4 maskColor = LIL_SAMPLE_2D_ST(_MatCap2ndBlendMask, samp, fd.uvMain);
                 float3 maskValue = maskColor.rgb;
-                if (_CustomUseMsdfMaskMatCap2 == 1) maskValue = lilMSDF(maskColor.rgb) * maskColor.a;
-                if (_CustomUseMsdfMaskMatCap2 == 2) maskValue = 1.0 - lilMSDF(maskColor.rgb) * maskColor.a;
+                if (_CustomUseMsdfMaskMatCap2 == 1) maskValue = lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
+                if (_CustomUseMsdfMaskMatCap2 == 2) maskValue = 1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a;
                 matCapMask = maskValue;
             #endif
 
@@ -635,8 +642,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                     float4 maskColor = LIL_SAMPLE_2D_ST(_EmissionBlendMask, samp, fd.uvMain);
                 #endif
                 float4 maskValue = maskColor.rgba;
-                if (_CustomUseMsdfMaskEmission1 == 1) maskValue = float4((lilMSDF(maskColor.rgb) * maskColor.a).xxx, 1.0);
-                if (_CustomUseMsdfMaskEmission1 == 2) maskValue = float4((1.0 - lilMSDF(maskColor.rgb) * maskColor.a).xxx, 1.0);
+                if (_CustomUseMsdfMaskEmission1 == 1) maskValue = float4((lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a).xxx, 1.0);
+                if (_CustomUseMsdfMaskEmission1 == 2) maskValue = float4((1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a).xxx, 1.0);
                 emissionColor *= maskValue;
             #endif
             // Gradation
@@ -699,8 +706,8 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
                     float4 maskColor = LIL_SAMPLE_2D_ST(_Emission2ndBlendMask, samp, fd.uvMain);
                 #endif
                 float4 maskValue = maskColor.rgba;
-                if (_CustomUseMsdfMaskEmission2 == 1) maskValue = float4((lilMSDF(maskColor.rgb) * maskColor.a).xxx, 1.0);
-                if (_CustomUseMsdfMaskEmission2 == 2) maskValue = float4((1.0 - lilMSDF(maskColor.rgb) * maskColor.a).xxx, 1.0);
+                if (_CustomUseMsdfMaskEmission2 == 1) maskValue = float4((lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a).xxx, 1.0);
+                if (_CustomUseMsdfMaskEmission2 == 2) maskValue = float4((1.0 - lilMsdfMaskCalculateMSDF(maskColor.rgb, _CustomMsdfSteepness) * maskColor.a).xxx, 1.0);
                 emission2ndColor *= maskValue;
             #endif
             // Gradation

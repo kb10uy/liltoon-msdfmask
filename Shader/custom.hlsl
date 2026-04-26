@@ -13,6 +13,7 @@
     int _CustomUseMsdfMaskEmission2; \
     int _CustomUseMsdfMaskMatCap1;   \
     int _CustomUseMsdfMaskMatCap2;   \
+    float _CustomMsdfSteepness;      \
     \
     int _CustomLayeredSdfMode;       \
     float4 _CustomLayeredSdfColorR;  \
@@ -30,7 +31,7 @@
 #define OVERRIDE_SHADOW lilGetShadingMsdfMask(fd LIL_SAMP_IN(sampler_MainTex));
 #define OVERRIDE_MATCAP lilGetMatCapMsdfMask(fd LIL_SAMP_IN(sampler_MainTex));
 #define OVERRIDE_MATCAP2ND lilGetMatCap2ndMsdfMask(fd LIL_SAMP_IN(sampler_MainTex));
-#if !defined(LIL_LITE) 
+#if !defined(LIL_LITE)
     #define OVERRIDE_EMISSION_1ST lilEmissionMsdfMask(fd LIL_SAMP_IN(sampler_MainTex));
     #define OVERRIDE_EMISSION_2ND lilEmission2ndMsdfMask(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
