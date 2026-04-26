@@ -20,6 +20,7 @@ namespace KusakaFactory.LiltoonMsdfMask
         private MaterialProperty _useMsdfMaskEmission2;
         private MaterialProperty _useMsdfMaskMatCap1;
         private MaterialProperty _useMsdfMaskMatCap2;
+        private MaterialProperty _msdfSteepness;
         private MaterialProperty _layeredSdfMode;
         private MaterialProperty _layeredSdfColorR;
         private MaterialProperty _layeredSdfColorG;
@@ -74,6 +75,7 @@ namespace KusakaFactory.LiltoonMsdfMask
             _useMsdfMaskEmission2 = FindProperty("_CustomUseMsdfMaskEmission2", props);
             _useMsdfMaskMatCap1 = FindProperty("_CustomUseMsdfMaskMatCap1", props);
             _useMsdfMaskMatCap2 = FindProperty("_CustomUseMsdfMaskMatCap2", props);
+            _msdfSteepness = FindProperty("_CustomMsdfSteepness", props);
             _layeredSdfMode = FindProperty("_CustomLayeredSdfMode", props);
             _layeredSdfColorR = FindProperty("_CustomLayeredSdfColorR", props);
             _layeredSdfColorG = FindProperty("_CustomLayeredSdfColorG", props);
@@ -139,6 +141,8 @@ namespace KusakaFactory.LiltoonMsdfMask
                 m_MaterialEditor.ShaderProperty(_useMsdfMaskEmission2, _modeLabelEmission2);
                 m_MaterialEditor.ShaderProperty(_useMsdfMaskMatCap1, _modeLabelMatCap1);
                 m_MaterialEditor.ShaderProperty(_useMsdfMaskMatCap2, _modeLabelMatCap2);
+
+                lilEditorGUI.LocalizedProperty(m_MaterialEditor, _msdfSteepness, false);
 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
