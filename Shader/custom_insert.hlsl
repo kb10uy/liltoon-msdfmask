@@ -466,7 +466,7 @@ float4 lilMsdfMaskAlphaBlend(float4 bg, float4 fg) {
             indirectCol = indirectCol * fd.lightColor;
             #if !defined(LIL_PASS_FORWARDADD)
                 // Environment Light
-                indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor * _ShadowEnvStrength);
+                indirectCol = lerp(indirectCol, fd.albedo, saturate(fd.indLightColor * _ShadowEnvStrength));
             #endif
             // Fix
             indirectCol = min(indirectCol, directCol);
