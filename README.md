@@ -21,5 +21,5 @@
 衣装が既にアルファマスクを使っていてその上から追加で独自のマスクをかけたいときに有用だと思います。
 
 ## ライセンス
-lilToon_MsdfMask は lilToon のコードの一部を改変して作成されました。
+lilToon MsdfMask Extension は lilToon のコードの一部を改変して作成されました。
 lilToon は The MIT License でライセンスされています(LICENSE-lilToon.txt も参照してください)。
